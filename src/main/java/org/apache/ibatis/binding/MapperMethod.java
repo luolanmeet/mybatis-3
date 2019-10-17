@@ -212,13 +212,15 @@ public class MapperMethod {
 
   public static class SqlCommand {
 
+    // 接口全路径.方法名 如：com.cck.mapper.IUserMapper.findByIdAndName
     private final String name;
+    // SELECT INSERT 这种
     private final SqlCommandType type;
 
     public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
       final String methodName = method.getName();
       final Class<?> declaringClass = method.getDeclaringClass();
-      // 拿到一个 MappedStatement 对象，对应一条SQL，MappedStatement在Configuration中有缓存，在解析XML时就缓存好了
+      // 拿到一个 MappedStatement 对象，对应一条SQL，MappedStatement在Configuration中有缓存，在解析时就构建好
       MappedStatement ms = resolveMappedStatement(mapperInterface, methodName, declaringClass,configuration);
       if (ms == null) {
         if (method.getAnnotation(Flush.class) != null) {
@@ -270,8 +272,11 @@ public class MapperMethod {
 
     private final boolean returnsMany;
     private final boolean returnsMap;
+    // 是不是返回void
     private final boolean returnsVoid;
+    // 是不是返回Cursor
     private final boolean returnsCursor;
+    // 方法的返回类型
     private final Class<?> returnType;
     private final String mapKey;
     private final Integer resultHandlerIndex;

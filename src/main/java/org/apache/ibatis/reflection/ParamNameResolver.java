@@ -45,6 +45,7 @@ public class ParamNameResolver {
    * <li>aMethod(int a, int b) -&gt; {{0, "0"}, {1, "1"}}</li>
    * <li>aMethod(int a, RowBounds rb, int b) -&gt; {{0, "0"}, {2, "1"}}</li>
    * </ul>
+   * 没有用 @Param 注解的参数，应该是{0, arg0} {1, arg1} 这样的
    */
   private final SortedMap<Integer, String> names;
 
@@ -115,17 +116,24 @@ public class ParamNameResolver {
     final int paramCount = names.size();
     if (args == null || paramCount == 0) {
       return null;
+      // 如果只有一个参数，直接返回即可
     } else if (!hasParamAnnotation && paramCount == 1) {
       return args[names.firstKey()];
     } else {
+      // 如果是多个参数，则返回Map<解析后的参数名，值> 如：("arg0", 1) ("name", "cck")
       final Map<String, Object> param = new ParamMap<Object>();
       int i = 0;
       for (Map.Entry<Integer, String> entry : names.entrySet()) {
+        
+        // put值("arg0", 1) ("name", "cck")
         param.put(entry.getValue(), args[entry.getKey()]);
+        
         // add generic param names (param1, param2, ...)
         final String genericParamName = GENERIC_NAME_PREFIX + String.valueOf(i + 1);
+        
         // ensure not to overwrite parameter named with @Param
         if (!names.containsValue(genericParamName)) {
+          // put值，这里是从1算起 ("param1", 1) ("param2", "cck")
           param.put(genericParamName, args[entry.getKey()]);
         }
         i++;

@@ -35,6 +35,7 @@ public class ResultMapping {
   private String column;
   private Class<?> javaType;
   private JdbcType jdbcType;
+  // 类型转换处理类
   private TypeHandler<?> typeHandler;
   private String nestedResultMapId;
   private String nestedQueryId;
