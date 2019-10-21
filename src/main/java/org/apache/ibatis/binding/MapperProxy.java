@@ -66,7 +66,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
   private MapperMethod cachedMapperMethod(Method method) {
     
-    // methodCache-->Map<Method, MapperMethod>
+    // methodCache-->Map<Method, MapperMethod>，从MapperProxyFactory传过来的，可重复使用
     MapperMethod mapperMethod = methodCache.get(method);
     
     if (mapperMethod == null) {

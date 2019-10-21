@@ -48,6 +48,7 @@ public class MapperProxyFactory<T> {
   }
 
   public T newInstance(SqlSession sqlSession) {
+    // 每次都是创建一个新的MapperProxy对象，不能做成单例的，因为和SqlSession绑定在一起了
     final MapperProxy<T> mapperProxy = new MapperProxy<T>(sqlSession, mapperInterface, methodCache);
     return newInstance(mapperProxy);
   }

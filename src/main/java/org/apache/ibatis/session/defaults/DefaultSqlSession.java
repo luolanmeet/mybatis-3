@@ -43,7 +43,7 @@ import org.apache.ibatis.session.SqlSession;
  *
  * The default implementation for {@link SqlSession}.
  * Note that this class is not Thread-Safe.
- *
+ * 这里已经写了，这个类不是线程安全的！！！所以不能设计成单例
  * @author Clinton Begin
  */
 public class DefaultSqlSession implements SqlSession {
@@ -144,6 +144,8 @@ public class DefaultSqlSession implements SqlSession {
   /**
    *  statement：接口名全路径.方法名
    *  parameter：方法入参
+   *
+   *  从MapperMethod进来的，但没用到MapperMethod什么东西
    */
   @Override
   public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
